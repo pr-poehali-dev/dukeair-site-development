@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
+import { useToast } from '@/hooks/use-toast';
 
 interface Flight {
   id: number;
@@ -14,6 +18,13 @@ interface Flight {
   registration: string;
   boarding: string;
   seat: string;
+}
+
+interface Review {
+  route: string;
+  date: string;
+  rating: number;
+  text: string;
 }
 
 const flights: Flight[] = [
@@ -29,7 +40,7 @@ const flights: Flight[] = [
   { id: 10, from: 'Пермь', to: 'Симферополь', date: '24.11.2025', time: '11:30', price: '7 600 ₽', registration: '09:30', boarding: '11:00', seat: '10A' },
 ];
 
-const reviews = [
+const initialReviews: Review[] = [
   {
     route: 'Москва – Сочи',
     date: '22 сентября 2024',
@@ -51,10 +62,18 @@ const reviews = [
 ];
 
 export default function Index() {
+  const { toast } = useToast();
   const [activeSection, setActiveSection] = useState<string>('home');
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
   const [showTicket, setShowTicket] = useState(false);
   const [showRefund, setShowRefund] = useState(false);
+  const [showAddReview, setShowAddReview] = useState(false);
+  const [reviews, setReviews] = useState<Review[]>(initialReviews);
+  const [newReview, setNewReview] = useState({
+    route: '',
+    rating: 5,
+    text: ''
+  });
 
   const handleBuyTicket = (flight: Flight) => {
     setSelectedFlight(flight);
@@ -70,6 +89,40 @@ export default function Index() {
     setActiveSection(section);
     const element = document.getElementById(section);
     element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSubmitReview = () => {
+    if (!newReview.route.trim() || !newReview.text.trim()) {
+      toast({
+        title: 'Ошибка',
+        description: 'Пожалуйста, заполните все поля',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('ru-RU', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    });
+
+    const review: Review = {
+      route: newReview.route,
+      date: dateStr,
+      rating: newReview.rating,
+      text: newReview.text
+    };
+
+    setReviews([review, ...reviews]);
+    setShowAddReview(false);
+    setNewReview({ route: '', rating: 5, text: '' });
+    
+    toast({
+      title: 'Спасибо за отзыв!',
+      description: 'Ваш отзыв успешно добавлен',
+    });
   };
 
   return (
@@ -200,7 +253,16 @@ export default function Index() {
 
       <section id="reviews" className="py-20 px-4 bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-4xl font-bold text-white mb-8 text-center font-heading">Отзывы</h2>
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-4xl font-bold text-white font-heading">Отзывы</h2>
+            <Button
+              onClick={() => setShowAddReview(true)}
+              className="bg-white text-primary hover:bg-white/90"
+            >
+              <Icon name="Plus" className="mr-2" size={18} />
+              Оставить отзыв
+            </Button>
+          </div>
           <div className="grid md:grid-cols-3 gap-6">
             {reviews.map((review, index) => (
               <Card key={index} className="bg-card/80 border-white/10">
@@ -324,6 +386,64 @@ export default function Index() {
             <p className="font-semibold">
               Мы ценим ваш выбор! До новых встреч с Duke Air! ✈️
             </p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showAddReview} onOpenChange={setShowAddReview}>
+        <DialogContent className="bg-card border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white">Оставить отзыв</DialogTitle>
+            <DialogDescription className="text-white/70">
+              Поделитесь своими впечатлениями о полете с Duke Air
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="route" className="text-white">Маршрут</Label>
+              <Input
+                id="route"
+                placeholder="Например: Москва – Сочи"
+                value={newReview.route}
+                onChange={(e) => setNewReview({ ...newReview, route: e.target.value })}
+                className="bg-primary/30 border-white/20 text-white placeholder:text-white/50"
+              />
+            </div>
+            <div>
+              <Label className="text-white mb-2 block">Оценка</Label>
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => setNewReview({ ...newReview, rating: star })}
+                    className="transition-transform hover:scale-110"
+                  >
+                    <Icon
+                      name="Star"
+                      size={32}
+                      className={star <= newReview.rating ? 'text-yellow-400 fill-yellow-400' : 'text-white/30'}
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="text" className="text-white">Ваш отзыв</Label>
+              <Textarea
+                id="text"
+                placeholder="Расскажите о своем опыте полета..."
+                value={newReview.text}
+                onChange={(e) => setNewReview({ ...newReview, text: e.target.value })}
+                className="bg-primary/30 border-white/20 text-white placeholder:text-white/50 min-h-32"
+              />
+            </div>
+            <Button
+              onClick={handleSubmitReview}
+              className="w-full bg-white text-primary hover:bg-white/90"
+            >
+              <Icon name="Send" className="mr-2" size={18} />
+              Отправить отзыв
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
