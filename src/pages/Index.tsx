@@ -38,6 +38,36 @@ const flights: Flight[] = [
   { id: 8, from: 'Уфа', to: 'Анапа', date: '22.11.2025', time: '09:40', price: '6 400 ₽', registration: '07:40', boarding: '09:10', seat: '14B' },
   { id: 9, from: 'Тюмень', to: 'Адлер', date: '23.11.2025', time: '18:15', price: '8 200 ₽', registration: '16:15', boarding: '17:45', seat: '5C' },
   { id: 10, from: 'Пермь', to: 'Симферополь', date: '24.11.2025', time: '11:30', price: '7 600 ₽', registration: '09:30', boarding: '11:00', seat: '10A' },
+  { id: 11, from: 'Москва', to: 'Владивосток', date: '25.11.2025', time: '06:20', price: '15 200 ₽', registration: '04:20', boarding: '05:50', seat: '7B' },
+  { id: 12, from: 'Сургут', to: 'Москва', date: '26.11.2025', time: '13:45', price: '5 300 ₽', registration: '11:45', boarding: '13:15', seat: '9C' },
+  { id: 13, from: 'Краснодар', to: 'Санкт-Петербург', date: '27.11.2025', time: '15:30', price: '7 900 ₽', registration: '13:30', boarding: '15:00', seat: '11A' },
+  { id: 14, from: 'Самара', to: 'Екатеринбург', date: '28.11.2025', time: '09:15', price: '4 200 ₽', registration: '07:15', boarding: '08:45', seat: '6D' },
+  { id: 15, from: 'Новосибирск', to: 'Москва', date: '29.11.2025', time: '17:50', price: '8 600 ₽', registration: '15:50', boarding: '17:20', seat: '4A' },
+  { id: 16, from: 'Казань', to: 'Сочи', date: '30.11.2025', time: '11:00', price: '6 100 ₽', registration: '09:00', boarding: '10:30', seat: '13B' },
+  { id: 17, from: 'Владивосток', to: 'Хабаровск', date: '01.12.2025', time: '08:40', price: '3 900 ₽', registration: '06:40', boarding: '08:10', seat: '8E' },
+  { id: 18, from: 'Сочи', to: 'Калининград', date: '02.12.2025', time: '14:25', price: '9 300 ₽', registration: '12:25', boarding: '13:55', seat: '5F' },
+  { id: 19, from: 'Тюмень', to: 'Самара', date: '03.12.2025', time: '10:10', price: '4 700 ₽', registration: '08:10', boarding: '09:40', seat: '10C' },
+  { id: 20, from: 'Москва', to: 'Казань', date: '04.12.2025', time: '16:05', price: '3 500 ₽', registration: '14:05', boarding: '15:35', seat: '14A' },
+  { id: 21, from: 'Сургут', to: 'Новосибирск', date: '10.12.2025', time: '12:30', price: '5 800 ₽', registration: '10:30', boarding: '12:00', seat: '7D' },
+  { id: 22, from: 'Калининград', to: 'Москва', date: '15.12.2025', time: '07:15', price: '6 200 ₽', registration: '05:15', boarding: '06:45', seat: '3B' },
+  { id: 23, from: 'Екатеринбург', to: 'Сочи', date: '20.12.2025', time: '19:40', price: '8 900 ₽', registration: '17:40', boarding: '19:10', seat: '12E' },
+  { id: 24, from: 'Санкт-Петербург', to: 'Краснодар', date: '25.12.2025', time: '13:20', price: '7 400 ₽', registration: '11:20', boarding: '12:50', seat: '6A' },
+  { id: 25, from: 'Самара', to: 'Владивосток', date: '28.12.2025', time: '05:50', price: '14 500 ₽', registration: '03:50', boarding: '05:20', seat: '2C' },
+  { id: 26, from: 'Москва', to: 'Анапа', date: '05.01.2026', time: '11:35', price: '7 200 ₽', registration: '09:35', boarding: '11:05', seat: '9B' },
+  { id: 27, from: 'Сургут', to: 'Краснодар', date: '10.01.2026', time: '14:15', price: '6 700 ₽', registration: '12:15', boarding: '13:45', seat: '11D' },
+  { id: 28, from: 'Новосибирск', to: 'Санкт-Петербург', date: '15.01.2026', time: '08:25', price: '9 100 ₽', registration: '06:25', boarding: '07:55', seat: '5A' },
+  { id: 29, from: 'Казань', to: 'Владивосток', date: '20.01.2026', time: '21:30', price: '13 800 ₽', registration: '19:30', boarding: '21:00', seat: '4F' },
+  { id: 30, from: 'Краснодар', to: 'Москва', date: '25.01.2026', time: '09:50', price: '6 500 ₽', registration: '07:50', boarding: '09:20', seat: '8C' },
+  { id: 31, from: 'Владивосток', to: 'Екатеринбург', date: '01.02.2026', time: '16:20', price: '12 100 ₽', registration: '14:20', boarding: '15:50', seat: '3D' },
+  { id: 32, from: 'Сочи', to: 'Новосибирск', date: '05.02.2026', time: '12:45', price: '9 600 ₽', registration: '10:45', boarding: '12:15', seat: '7E' },
+  { id: 33, from: 'Тюмень', to: 'Москва', date: '10.02.2026', time: '07:30', price: '5 400 ₽', registration: '05:30', boarding: '07:00', seat: '13A' },
+  { id: 34, from: 'Самара', to: 'Сочи', date: '14.02.2026', time: '15:10', price: '7 800 ₽', registration: '13:10', boarding: '14:40', seat: '10B' },
+  { id: 35, from: 'Москва', to: 'Екатеринбург', date: '20.02.2026', time: '10:40', price: '5 900 ₽', registration: '08:40', boarding: '10:10', seat: '6C' },
+  { id: 36, from: 'Санкт-Петербург', to: 'Владивосток', date: '25.02.2026', time: '18:15', price: '16 200 ₽', registration: '16:15', boarding: '17:45', seat: '2A' },
+  { id: 37, from: 'Калининград', to: 'Сургут', date: '01.03.2026', time: '13:55', price: '8 300 ₽', registration: '11:55', boarding: '13:25', seat: '9D' },
+  { id: 38, from: 'Уфа', to: 'Владивосток', date: '05.03.2026', time: '20:20', price: '14 700 ₽', registration: '18:20', boarding: '19:50', seat: '5B' },
+  { id: 39, from: 'Новосибирск', to: 'Казань', date: '10.03.2026', time: '11:25', price: '6 900 ₽', registration: '09:25', boarding: '10:55', seat: '12C' },
+  { id: 40, from: 'Краснодар', to: 'Самара', date: '15.03.2026', time: '08:05', price: '5 100 ₽', registration: '06:05', boarding: '07:35', seat: '14D' },
 ];
 
 const initialReviews: Review[] = [
@@ -78,6 +108,10 @@ export default function Index() {
   const [searchFrom, setSearchFrom] = useState('');
   const [searchTo, setSearchTo] = useState('');
   const [searchResults, setSearchResults] = useState<Flight[]>([]);
+  const [fromSuggestions, setFromSuggestions] = useState<string[]>([]);
+  const [toSuggestions, setToSuggestions] = useState<string[]>([]);
+  const [showFromSuggestions, setShowFromSuggestions] = useState(false);
+  const [showToSuggestions, setShowToSuggestions] = useState(false);
 
   const handleBuyTicket = (flight: Flight) => {
     setSelectedFlight(flight);
@@ -100,18 +134,48 @@ export default function Index() {
     }
 
     const results = flights.filter(flight => 
-      flight.from.toLowerCase().includes(searchFrom.toLowerCase()) &&
-      flight.to.toLowerCase().includes(searchTo.toLowerCase())
+      flight.from.toLowerCase() === searchFrom.toLowerCase() &&
+      flight.to.toLowerCase() === searchTo.toLowerCase()
     );
 
     setSearchResults(results);
+    setShowFromSuggestions(false);
+    setShowToSuggestions(false);
 
     if (results.length === 0) {
       toast({
         title: 'Рейсы не найдены',
-        description: 'По вашему запросу рейсов не найдено. Попробуйте изменить параметры поиска.',
+        description: `Рейсов ${searchFrom} → ${searchTo} не найдено. Попробуйте другое направление.`,
         variant: 'destructive'
       });
+    }
+  };
+
+  const handleFromInputChange = (value: string) => {
+    setSearchFrom(value);
+    if (value.trim().length > 0) {
+      const uniqueCities = Array.from(new Set(flights.map(f => f.from)));
+      const suggestions = uniqueCities.filter(city => 
+        city.toLowerCase().includes(value.toLowerCase())
+      );
+      setFromSuggestions(suggestions);
+      setShowFromSuggestions(true);
+    } else {
+      setShowFromSuggestions(false);
+    }
+  };
+
+  const handleToInputChange = (value: string) => {
+    setSearchTo(value);
+    if (value.trim().length > 0) {
+      const uniqueCities = Array.from(new Set(flights.map(f => f.to)));
+      const suggestions = uniqueCities.filter(city => 
+        city.toLowerCase().includes(value.toLowerCase())
+      );
+      setToSuggestions(suggestions);
+      setShowToSuggestions(true);
+    } else {
+      setShowToSuggestions(false);
     }
   };
 
@@ -260,25 +324,59 @@ export default function Index() {
           <Card className="bg-card/80 border-white/10 mb-8">
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-1">
+                <div className="flex-1 relative">
                   <Label htmlFor="searchFrom" className="text-white mb-2 block">Откуда</Label>
                   <Input
                     id="searchFrom"
                     placeholder="Например: Москва"
                     value={searchFrom}
-                    onChange={(e) => setSearchFrom(e.target.value)}
+                    onChange={(e) => handleFromInputChange(e.target.value)}
+                    onFocus={() => searchFrom && setShowFromSuggestions(true)}
                     className="bg-primary/30 border-white/20 text-white placeholder:text-white/50"
                   />
+                  {showFromSuggestions && fromSuggestions.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 bg-card border border-white/20 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                      {fromSuggestions.map((city, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            setSearchFrom(city);
+                            setShowFromSuggestions(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-white hover:bg-primary/50 transition-colors"
+                        >
+                          {city}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 relative">
                   <Label htmlFor="searchTo" className="text-white mb-2 block">Куда</Label>
                   <Input
                     id="searchTo"
                     placeholder="Например: Сочи"
                     value={searchTo}
-                    onChange={(e) => setSearchTo(e.target.value)}
+                    onChange={(e) => handleToInputChange(e.target.value)}
+                    onFocus={() => searchTo && setShowToSuggestions(true)}
                     className="bg-primary/30 border-white/20 text-white placeholder:text-white/50"
                   />
+                  {showToSuggestions && toSuggestions.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 bg-card border border-white/20 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                      {toSuggestions.map((city, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            setSearchTo(city);
+                            setShowToSuggestions(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-white hover:bg-primary/50 transition-colors"
+                        >
+                          {city}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-end">
                   <Button
