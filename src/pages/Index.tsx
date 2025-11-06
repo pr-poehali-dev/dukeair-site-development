@@ -65,6 +65,7 @@ export default function Index() {
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState<string>('home');
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
+  const [showConfirmPurchase, setShowConfirmPurchase] = useState(false);
   const [showTicket, setShowTicket] = useState(false);
   const [showRefund, setShowRefund] = useState(false);
   const [showAddReview, setShowAddReview] = useState(false);
@@ -74,10 +75,44 @@ export default function Index() {
     rating: 5,
     text: ''
   });
+  const [searchFrom, setSearchFrom] = useState('');
+  const [searchTo, setSearchTo] = useState('');
+  const [searchResults, setSearchResults] = useState<Flight[]>([]);
 
   const handleBuyTicket = (flight: Flight) => {
     setSelectedFlight(flight);
+    setShowConfirmPurchase(true);
+  };
+
+  const handleConfirmPurchase = () => {
+    setShowConfirmPurchase(false);
     setShowTicket(true);
+  };
+
+  const handleSearchFlights = () => {
+    if (!searchFrom.trim() || !searchTo.trim()) {
+      toast({
+        title: 'Ошибка',
+        description: 'Пожалуйста, укажите откуда и куда вы хотите лететь',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    const results = flights.filter(flight => 
+      flight.from.toLowerCase().includes(searchFrom.toLowerCase()) &&
+      flight.to.toLowerCase().includes(searchTo.toLowerCase())
+    );
+
+    setSearchResults(results);
+
+    if (results.length === 0) {
+      toast({
+        title: 'Рейсы не найдены',
+        description: 'По вашему запросу рейсов не найдено. Попробуйте изменить параметры поиска.',
+        variant: 'destructive'
+      });
+    }
   };
 
   const handleRefund = () => {
@@ -221,6 +256,77 @@ export default function Index() {
       <section id="schedule" className="py-20 px-4">
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold text-white mb-8 text-center font-heading">Расписание рейсов</h2>
+          
+          <Card className="bg-card/80 border-white/10 mb-8">
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1">
+                  <Label htmlFor="searchFrom" className="text-white mb-2 block">Откуда</Label>
+                  <Input
+                    id="searchFrom"
+                    placeholder="Например: Москва"
+                    value={searchFrom}
+                    onChange={(e) => setSearchFrom(e.target.value)}
+                    className="bg-primary/30 border-white/20 text-white placeholder:text-white/50"
+                  />
+                </div>
+                <div className="flex-1">
+                  <Label htmlFor="searchTo" className="text-white mb-2 block">Куда</Label>
+                  <Input
+                    id="searchTo"
+                    placeholder="Например: Сочи"
+                    value={searchTo}
+                    onChange={(e) => setSearchTo(e.target.value)}
+                    className="bg-primary/30 border-white/20 text-white placeholder:text-white/50"
+                  />
+                </div>
+                <div className="flex items-end">
+                  <Button
+                    onClick={handleSearchFlights}
+                    className="bg-white text-primary hover:bg-white/90 w-full md:w-auto"
+                  >
+                    <Icon name="Search" className="mr-2" size={18} />
+                    Найти рейсы
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {searchResults.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-white mb-4 font-heading">Результаты поиска</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {searchResults.map(flight => (
+                  <Card key={flight.id} className="bg-card/80 border-accent/50 transition-transform hover:scale-105">
+                    <CardHeader>
+                      <CardTitle className="text-white flex items-center gap-2">
+                        <Icon name="Plane" size={24} />
+                        {flight.from} → {flight.to}
+                      </CardTitle>
+                      <CardDescription className="text-white/70">
+                        {flight.date} в {flight.time}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="text-3xl font-bold text-white">{flight.price}</div>
+                        <Button 
+                          className="w-full bg-white text-primary hover:bg-white/90"
+                          onClick={() => handleBuyTicket(flight)}
+                        >
+                          <Icon name="Ticket" className="mr-2" size={18} />
+                          Купить билет
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <h3 className="text-2xl font-bold text-white mb-4 font-heading">Все рейсы</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {flights.map(flight => (
               <Card key={flight.id} className="bg-card/80 border-white/10 transition-transform hover:scale-105">
@@ -316,6 +422,54 @@ export default function Index() {
           <p>© 2024 Duke Air. Все права защищены.</p>
         </div>
       </footer>
+
+      <Dialog open={showConfirmPurchase} onOpenChange={setShowConfirmPurchase}>
+        <DialogContent className="bg-card border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white flex items-center gap-2">
+              <Icon name="ShoppingCart" className="text-accent" size={24} />
+              Купить билет на рейс?
+            </DialogTitle>
+            <DialogDescription className="text-white/70">
+              Подтвердите покупку билета
+            </DialogDescription>
+          </DialogHeader>
+          {selectedFlight && (
+            <div className="space-y-4 text-white">
+              <div className="p-4 bg-primary/30 rounded-lg space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-white/70">Маршрут</span>
+                  <span className="font-semibold">{selectedFlight.from} → {selectedFlight.to}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white/70">Дата</span>
+                  <span className="font-semibold">{selectedFlight.date} в {selectedFlight.time}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white/70">Стоимость</span>
+                  <span className="font-semibold text-xl">{selectedFlight.price}</span>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline"
+                  className="flex-1 border-white/20 text-white hover:bg-white/10"
+                  onClick={() => setShowConfirmPurchase(false)}
+                >
+                  Отмена
+                </Button>
+                <Button 
+                  className="flex-1 bg-white text-primary hover:bg-white/90"
+                  onClick={handleConfirmPurchase}
+                >
+                  <Icon name="CheckCircle" className="mr-2" size={18} />
+                  Подтвердить покупку
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={showTicket} onOpenChange={setShowTicket}>
         <DialogContent className="bg-card border-white/10">
