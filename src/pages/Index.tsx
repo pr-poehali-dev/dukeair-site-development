@@ -88,6 +88,42 @@ const initialReviews: Review[] = [
     date: '12 октября 2024',
     rating: 4,
     text: 'Летал DukeAir в командировку из Лондона в Нью-Йорк, бизнес-класс. В целом, очень достойная авиакомпания. Регистрация прошла быстро, бизнес-зал в Хитроу был отличный, хотя и немного переполнен. Самолет был чистым, кресла раскладывались в полноценную кровать, что позволило хорошо выспаться. Бортпроводники были внимательны, но без излишней навязчивости, что я ценю. Питание хорошее, качественное, но без \'вау-эффекта\'. Единственный минус – вылетели с задержкой в 40 минут из-за позднего прибытия борта, но капитан оперативно нас проинформировал, и часть задержки удалось сократить в воздухе. В целом, для деловых поездок – надежный и комфортный выбор, готов летать снова.'
+  },
+  {
+    route: 'Сургут – Самара',
+    date: '18 октября 2024',
+    rating: 5,
+    text: 'Отличный первый опыт с Duke Air! Летел на пробном рейсе Сургут-Самара. Всё прошло идеально - вовремя, комфортно, вежливый персонал. Особенно порадовали цены, намного дешевле конкурентов. Самолет новый, чистый, кресла удобные. Буду рекомендовать друзьям!'
+  },
+  {
+    route: 'Екатеринбург – Владивосток',
+    date: '28 октября 2024',
+    rating: 4,
+    text: 'Долгий перелет через всю страну прошел комфортно. В бизнес-классе все на высоком уровне - удобные кресла, вкусная еда, внимательный сервис. Единственное - развлекательная система немного подтормаживала. Но в целом очень доволен, цена отличная для такого расстояния.'
+  },
+  {
+    route: 'Новосибирск – Иркутск',
+    date: '10 ноября 2024',
+    rating: 5,
+    text: 'Короткий перелет, но впечатления отличные! Всё четко, по расписанию. Бортпроводники очень приветливые, дали вкусный завтрак. Duke Air приятно удивили, буду летать еще!'
+  },
+  {
+    route: 'Казань – Краснодар',
+    date: '15 ноября 2024',
+    rating: 4,
+    text: 'Летела с детьми, переживала как пройдет полет. Персонал Duke Air был очень внимателен к детям, дали раскраски и игрушки. Полет прошел спокойно. Спасибо за заботу о семьях с детьми!'
+  },
+  {
+    route: 'Санкт-Петербург – Калининград',
+    date: '20 ноября 2024',
+    rating: 3,
+    text: 'В целом нормально, но были небольшие задержки при посадке. Самолет старенький, но чистый. Цена хорошая, для бюджетного перелета вполне подходит. За эти деньги не ожидал роскоши.'
+  },
+  {
+    route: 'Ростов-на-Дону – Минеральные Воды',
+    date: '25 ноября 2024',
+    rating: 5,
+    text: 'Короткий рейс на выходные. Всё прошло отлично! Быстрая регистрация, вежливый персонал, вовремя вылетели и прилетели. За такую цену это просто находка. Однозначно рекомендую!'
   }
 ];
 
@@ -112,6 +148,7 @@ export default function Index() {
   const [toSuggestions, setToSuggestions] = useState<string[]>([]);
   const [showFromSuggestions, setShowFromSuggestions] = useState(false);
   const [showToSuggestions, setShowToSuggestions] = useState(false);
+  const [myTickets, setMyTickets] = useState<Flight[]>([]);
 
   const handleBuyTicket = (flight: Flight) => {
     setSelectedFlight(flight);
@@ -119,6 +156,9 @@ export default function Index() {
   };
 
   const handleConfirmPurchase = () => {
+    if (selectedFlight) {
+      setMyTickets([...myTickets, selectedFlight]);
+    }
     setShowConfirmPurchase(false);
     setShowTicket(true);
   };
@@ -238,6 +278,7 @@ export default function Index() {
                 { id: 'home', label: 'Главная', icon: 'Home' },
                 { id: 'about', label: 'О нас', icon: 'Info' },
                 { id: 'schedule', label: 'Расписание', icon: 'Calendar' },
+                { id: 'mytickets', label: 'Мои билеты', icon: 'TicketCheck' },
                 { id: 'reviews', label: 'Отзывы', icon: 'Star' },
                 { id: 'bot', label: 'Telegram бот', icon: 'Send' }
               ].map(item => (
@@ -452,6 +493,63 @@ export default function Index() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section id="mytickets" className="py-20 px-4">
+        <div className="container mx-auto">
+          <h2 className="text-4xl font-bold text-white mb-8 text-center font-heading">Мои билеты</h2>
+          {myTickets.length === 0 ? (
+            <Card className="bg-card/80 border-white/10">
+              <CardContent className="p-12 text-center">
+                <Icon name="TicketX" size={64} className="text-white/50 mx-auto mb-4" />
+                <p className="text-white/70 text-lg">У вас пока нет купленных билетов</p>
+                <Button
+                  className="mt-4 bg-white text-primary hover:bg-white/90"
+                  onClick={() => scrollToSection('schedule')}
+                >
+                  <Icon name="Search" className="mr-2" size={18} />
+                  Найти рейсы
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {myTickets.map((ticket, index) => (
+                <Card key={index} className="bg-card/80 border-accent/50">
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <Icon name="TicketCheck" size={24} className="text-green-400" />
+                      {ticket.from} → {ticket.to}
+                    </CardTitle>
+                    <CardDescription className="text-white/70">
+                      {ticket.date} в {ticket.time}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2 text-white">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-white/70">Место:</span>
+                        <span className="font-semibold">{ticket.seat}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-white/70">Регистрация:</span>
+                        <span className="font-semibold">{ticket.registration}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-white/70">Посадка:</span>
+                        <span className="font-semibold">{ticket.boarding}</span>
+                      </div>
+                      <div className="flex justify-between text-sm pt-2 border-t border-white/20">
+                        <span className="text-white/70">Стоимость:</span>
+                        <span className="font-semibold text-lg">{ticket.price}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
